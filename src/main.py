@@ -30,15 +30,11 @@ def read_file():
 
 
 def write_json(data, i):
+    """
+        write the nsc_map_cid dictionary to the file
+    """
     with open('cid/cid_nsc_' + str(i) + '.json', 'w') as file:
         json.dump(data, file)
-
-
-def read_json(i):
-    j = dict()
-    with open('cid/cid_nsc_' + str(i) + '.json', 'r') as file:
-        j = json.load(file)
-    print("The number of element in the file: {}".format(len(j)))
 
 def getUrl(nsc_nums):
     return [(item, 'https://pubchem.ncbi.nlm.nih.gov/compound/nsc' + str(item)) for item in nsc_nums]
@@ -51,16 +47,16 @@ def cid_crawler(urls):
     count = [0]
     cid["not_found"] = list()
     async def fetch(url):
-        sleep_rand = random.randint(2,12)
+        sleep_rand = random.randint(2,12) # generate a random number for thread sleep
         
         headers = [ {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11 Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.133 Safari/534.16'},
                     {'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20100101 Firefox/7.0.1'},
                     {'User-Agent': 'Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; en) Presto/2.8.131 Version/11.11'},
                     {'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_6; en-en) AppleWebKit/533.19.4 (KHTML, like Gecko) Version/5.0.3 Safari/533.19.4'}]
         
-        header = random.choice(headers)
+        header = random.choice(headers) # randomly select the user agent
         connector = aiohttp.TCPConnector(limit=50, limit_per_host=50)
-        async with asyncio.Semaphore(5):
+        async with asyncio.Semaphore(5): 
             async with aiohttp.ClientSession(headers=header, connector=connector) as session:
                 await  asyncio.sleep(sleep_rand)
                 async with session.get(url, headers=header) as res:
@@ -101,7 +97,6 @@ def nsc_2_cid():
         t2 = time.time() 
         print('Batch {} is Finished! It takes {}s'.format(i,(t2 - t1)))
         write_json(new_data, i)
-        read_json(i)
         """ if(i % 8 == 0):
             time.sleep(60)
         else:
