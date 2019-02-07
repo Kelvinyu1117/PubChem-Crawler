@@ -23,7 +23,7 @@ def read_file():
 
         nsc_nums = list(nsc_nums)  # filter duplicate element
         nsc_nums.sort()
-        print('Read the file successfully, there are {} and {} different NSC number in the file.'.format(
+        print('Read the file successfully, there are {} lines and {} different NSC numbers in the file.'.format(
             i, len(nsc_nums)))
 
     return nsc_nums
