@@ -42,11 +42,16 @@ def getUrl(nsc_nums):
 def slice_url(urls, size=300):
     return [urls[i:i + size] for i in range(0, len(urls), size)]
 
+
 def cid_crawler(urls):
     cid = dict()
     count = [0]
     cid["not_found"] = list()
+
     async def fetch(url):
+        """
+            return the html of the url
+        """
         sleep_rand = random.randint(2,12) # generate a random number for thread sleep
         
         headers = [ {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11 Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.133 Safari/534.16'},
@@ -77,7 +82,7 @@ def cid_crawler(urls):
         count[0] += 1
 
     loop = asyncio.get_event_loop()
-    tasks = [asyncio.ensure_future(getCID(nsc, url)) for nsc, url in urls]
+    tasks = [asyncio.ensure_future(getCID(nsc, url)) for nsc, url in urls] # create a list of tasks
     tasks = asyncio.gather(*tasks)
     loop.run_until_complete(tasks)
 
@@ -90,7 +95,8 @@ def nsc_2_cid():
     url_batches = slice_url(urls)
     
     print("Number of Batches: " + str(len(url_batches)))
-    for i in range (64, len(url_batches)):
+
+    for i in range (0, len(url_batches)):
         print("Batche size: " + str(len(url_batches[i])))
         t1 = time.time()
         new_data = cid_crawler(url_batches[i])
@@ -102,10 +108,9 @@ def nsc_2_cid():
         else:
             time.sleep(15) """
 
-def main():
-    nsc_2_cid()
+    
 
 
 
 if __name__ == '__main__':
-    main()
+    nsc_2_cid()
