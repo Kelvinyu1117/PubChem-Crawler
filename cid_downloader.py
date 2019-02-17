@@ -97,7 +97,7 @@ def nsc_2_cid():
     print("Number of Batches: " + str(len(url_batches)))
 
     for i in range (0, len(url_batches)):
-        print("Batche size: " + str(len(url_batches[i])))
+        print("Batch size: " + str(len(url_batches[i])))
         t1 = time.time()
         new_data = cid_crawler(url_batches[i])
         t2 = time.time() 
