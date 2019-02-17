@@ -1,12 +1,18 @@
 import json
 
-def read_cid1(i):
+def read_smiles(i):
+    """
+        read the smiles file
+    """
     data = dict()
     with open('smiles/cid_smiles_' + str(i) + '.json', 'r') as file:
         data = json.load(file)
     return data
 
-def read_cid2(i):
+def read_cid(i):
+    """
+        read the cid file
+    """
     data = dict()
     with open('cid/cid_nsc_' + str(i) + '.json', 'r') as file:
         data = json.load(file)
@@ -14,6 +20,10 @@ def read_cid2(i):
 
 
 def test():
+    """
+        show the number of data in the cid file and the smiles file
+        for checking whether the number of data match or not
+    """
     totalData1 = 0
     totalData2 = 0
     diff = 0
@@ -21,8 +31,9 @@ def test():
         lenData1 = 0
         lenData2 = 0
        
-        data1 = read_cid1(i)
-        data2 = read_cid2(i)
+        data1 = read_smiles(i)
+        data2 = read_cid(i)
+
         for item in data1: 
             if(data1[item] != {}):
                 lenData1 += 1

@@ -4,7 +4,6 @@ import aiohttp
 import asyncio
 import random
 import json
-import pubchempy as pcp
 from bs4 import BeautifulSoup as bs
 
 
@@ -37,9 +36,15 @@ def write_json(data, i):
         json.dump(data, file)
 
 def getUrl(nsc_nums):
+    """
+        map the nsc number to the target url
+    """
     return [(item, 'https://pubchem.ncbi.nlm.nih.gov/compound/nsc' + str(item)) for item in nsc_nums]
 
 def slice_url(urls, size=300):
+    """
+        slice the url into different batches with size 300 items
+    """
     return [urls[i:i + size] for i in range(0, len(urls), size)]
 
 
@@ -69,7 +74,9 @@ def cid_crawler(urls):
 
 
     async def getCID(nsc, url):
-        
+        """
+            parse the response html file to extract the cid
+        """
         res = await fetch(url)
         compound_html = bs(res, 'html.parser')
         compound_cid = compound_html.find('meta', {'name': 'pubchem_uid_value'})
@@ -81,6 +88,7 @@ def cid_crawler(urls):
         print("Item {} is finished.".format(count[0]))
         count[0] += 1
 
+    # async operation
     loop = asyncio.get_event_loop()
     tasks = [asyncio.ensure_future(getCID(nsc, url)) for nsc, url in urls] # create a list of tasks
     tasks = asyncio.gather(*tasks)
@@ -103,10 +111,6 @@ def nsc_2_cid():
         t2 = time.time() 
         print('Batch {} is Finished! It takes {}s'.format(i,(t2 - t1)))
         write_json(new_data, i)
-        """ if(i % 8 == 0):
-            time.sleep(60)
-        else:
-            time.sleep(15) """
 
     
 
