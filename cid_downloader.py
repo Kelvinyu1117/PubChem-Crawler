@@ -57,7 +57,7 @@ def cid_crawler(urls):
         """
             return the html of the url
         """
-        sleep_rand = random.randint(2,12) # generate a random number for thread sleep
+        sleep_rand = random.randint(5,15) # generate a random number for thread sleep
         
         headers = [ {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11 Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.133 Safari/534.16'},
                     {'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20100101 Firefox/7.0.1'},
@@ -111,7 +111,8 @@ def nsc_2_cid():
         t2 = time.time() 
         print('Batch {} is Finished! It takes {}s'.format(i,(t2 - t1)))
         write_json(new_data, i)
-
+        if(i % 10 == 0):
+            time.sleep(30)
     
 
 
